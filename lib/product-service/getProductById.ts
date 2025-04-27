@@ -21,6 +21,11 @@ exports.handler = async (event: any) => {
 
   return {
     statusCode: 200,
+    headers: {
+      "Access-Control-Allow-Origin": "http://localhost:3000",
+      "Access-Control-Allow-Methods": "GET",
+      "Access-Control-Allow-Headers": "Content-Type",
+    },
     body: JSON.stringify(product),
   };
 };

@@ -38,7 +38,7 @@ Resources:
       Code:
         S3Bucket:
           Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
-        S3Key: 5902d7f59395b4cf119540ffba383172a3415e792ab2f6ed1c27e6a3ed0b864e.zip
+        S3Key: dae3edf337dcd10c5905fa56ae24511f7ceb2594388fc7d2ca671fe1e8e6e7f0.zip
       Handler: getProductsList.handler
       Layers:
         - Ref: SharedLayer27DFABF0
@@ -51,7 +51,7 @@ Resources:
       - GetProductsListLambdaServiceRole07D1CCC1
     Metadata:
       aws:cdk:path: ProductServiceStack/GetProductsListLambda/Resource
-      aws:asset:path: asset.5902d7f59395b4cf119540ffba383172a3415e792ab2f6ed1c27e6a3ed0b864e
+      aws:asset:path: asset.dae3edf337dcd10c5905fa56ae24511f7ceb2594388fc7d2ca671fe1e8e6e7f0
       aws:asset:is-bundled: false
       aws:asset:property: Code
   GetProductByIdLambdaServiceRoleE1FC5E1E:
@@ -78,7 +78,7 @@ Resources:
       Code:
         S3Bucket:
           Fn::Sub: cdk-hnb659fds-assets-${AWS::AccountId}-${AWS::Region}
-        S3Key: 5902d7f59395b4cf119540ffba383172a3415e792ab2f6ed1c27e6a3ed0b864e.zip
+        S3Key: dae3edf337dcd10c5905fa56ae24511f7ceb2594388fc7d2ca671fe1e8e6e7f0.zip
       Handler: getProductById.handler
       Layers:
         - Ref: SharedLayer27DFABF0
@@ -91,7 +91,7 @@ Resources:
       - GetProductByIdLambdaServiceRoleE1FC5E1E
     Metadata:
       aws:cdk:path: ProductServiceStack/GetProductByIdLambda/Resource
-      aws:asset:path: asset.5902d7f59395b4cf119540ffba383172a3415e792ab2f6ed1c27e6a3ed0b864e
+      aws:asset:path: asset.dae3edf337dcd10c5905fa56ae24511f7ceb2594388fc7d2ca671fe1e8e6e7f0
       aws:asset:is-bundled: false
       aws:asset:property: Code
   ProductServiceApiFE734E24:
