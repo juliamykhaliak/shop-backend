@@ -13,7 +13,10 @@ import { EmailSubscription } from 'aws-cdk-lib/aws-sns-subscriptions';
 import {SqsEventSource} from "aws-cdk-lib/aws-lambda-event-sources";
 
 export class ImportServiceStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, tables: ProductDbStack, props?: cdk.StackProps) {
+  constructor(scope: Construct, id: string, props: cdk.StackProps & {
+    basicAuthorizer: lambda.IFunction;
+    tables: ProductDbStack
+  }) {
     super(scope, id, props);
 
     const bucket = new s3.Bucket(this, 'ImportBucket', {
@@ -21,6 +24,14 @@ export class ImportServiceStack extends cdk.Stack {
       removalPolicy: cdk.RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
     })
+
+    const lambdaAuthorizer = new apigateway.TokenAuthorizer(
+      this,
+      "LambdaAuthorizer",
+      {
+        handler: props.basicAuthorizer,
+      },
+    );
 
     const importProductsFileLambda = new lambda.Function(this, 'ImportProductsFile', {
       runtime: lambda.Runtime.NODEJS_18_X,
@@ -66,7 +77,7 @@ export class ImportServiceStack extends cdk.Stack {
     }));
     createProductTopic.grantPublish(catalogBatchProcessLambda);
     catalogItemsQueue.grantSendMessages(importFileParserLambda);
-    tables.grantWriteData('products', catalogBatchProcessLambda);
+    props.tables.grantWriteData('products', catalogBatchProcessLambda);
 
     // Deploy an empty file to create the 'uploaded/' folder
     new s3deploy.BucketDeployment(this, 'DeployUploadedFolder', {
@@ -90,6 +101,9 @@ export class ImportServiceStack extends cdk.Stack {
 
     // Add /import endpoint
     const importProductsResource = api.root.addResource("import");
-    importProductsResource.addMethod("GET", new apigateway.LambdaIntegration(importProductsFileLambda));
+    importProductsResource.addMethod("GET", new apigateway.LambdaIntegration(importProductsFileLambda), {
+      authorizer: lambdaAuthorizer,
+      authorizationType: apigateway.AuthorizationType.CUSTOM,
+    });
   }
 }
